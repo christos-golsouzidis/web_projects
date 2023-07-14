@@ -1,0 +1,227 @@
+﻿@page
+@model EditModel
+@{
+    ViewData["Title"] = "Edit task";
+    
+    bool pr_02 = false;
+    bool pr_01 = false;
+    bool pr_00 = false;
+    bool pr_ff = false;
+    bool pr_fe = false;
+    bool st_02 = false;
+    bool st_01 = false;
+    bool st_00 = false;
+    bool st_ff = false;
+    bool st_fe = false;
+
+    @switch (Model.task.Priority)
+    {
+        case 2:
+            pr_02 = true;
+
+            break;
+        case 1:
+            pr_01 = true;
+
+            break;
+        case 0:
+            pr_00 = true;
+
+            break;
+        case -1:
+            pr_ff = true;
+
+            break;
+        case -2:
+            pr_fe = true;
+
+            break;
+        default:
+
+            break;
+    }
+
+    @switch (Model.task.Status)
+    {
+        case 5:
+            st_02 = true;
+
+            break;
+        case 4:
+            st_01 = true;
+
+            break;
+        case 3:
+            st_00 = true;
+
+            break;
+        case 2:
+            st_ff = true;
+
+            break;
+        case 1:
+            st_fe = true;
+
+            break;
+        default:
+            Exception ex = new Exception();
+            throw ex;
+            break;
+    }
+}
+
+<form method="post">
+    <div class="d-flex justify-content-center">
+        <h4>Edit task &#x1f9d0</h4>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th ></th>
+                <th >Current value</th>
+                <th >New value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Project name</th>
+                <td>
+                    @Model.task.Project
+                </td>
+                <td >
+                    <input class="w-100" name="project" value="@Model.task.Project" />
+                    @{
+                        if (@Model.ErrorEmptyname == true)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <p>Error: Project name is required</p>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th>Task description</th>
+                <td>
+                    @Model.task.Description
+                </td>
+                <td >
+                    <input class="w-100" name="description" value="@Model.task.Description" />
+                </td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>
+                    @switch (@Model.task.Status)
+                    {
+                        case 5:
+                            <p class="text-dark">Finished</p>
+                            break;
+                        case 4:
+                            <p style="color:darkgreen">Active - Final steps</p>
+                            break;
+                        case 3:
+                            <p style="color:green">Active</p>
+                            break;
+                        case 2:
+                            <p style="color:orangered">On hold</p>
+                            break;
+                        case 1:
+                            <p style="color:red">Cancelled</p>
+                            break;
+
+                    }
+                </td>
+                <td >
+                    <select class="list-group" name="status">
+                        <option value="1" selected="@(st_fe)">Cancelled</option>
+                        <option value="2" selected="@(st_ff)">On hold</option>
+                        <option value="3" selected="@(st_00)">Active</option>
+                        <option value="4" selected="@(st_01)">Active - Final steps</option>
+                        <option value="5" selected="@(st_02)">Finished</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>Deadline</th>
+                <td>
+                    @if (Model.task.Deadline != null)
+                    {
+                        <p>
+                            @Model.task.Deadline.Value.ToString("yyyy-MM-dd HH:mm")
+                        </p>
+                    }
+                </td>
+                <td >
+                    @if (@Model.task.Deadline != null)
+                    {
+                        <input type="datetime-local" class="w-100" name="deadline" value="@(Model.task.Deadline.Value.ToString("yyyy-MM-dd HH:mm"))" />
+                    }
+                    else
+                    {
+                        <input type="datetime-local" class="w-100" name="deadline" />
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th>Priority</th>
+                <td>
+                    @switch (@Model.task.Priority)
+                    {
+                        case 2:
+                            <p>Highest</p>
+                            break;
+                        case 1:
+                            <p>High</p>
+                            break;
+                        case 0:
+                            <p>Normal</p>
+                            break;
+                        case -1:
+                            <p>Low</p>
+                            break;
+                        case -2:
+                            <p>Lowest</p>
+                            break;
+
+                    }
+                </td>
+                <td >
+                    <select class="list-group" name="priority">
+                        <option value="2" selected="@(pr_02)" >Highest</option>
+                        <option value="1" selected="@(pr_01)">High</option>
+                        <option value="0" selected="@(pr_00)">Normal</option>
+                        <option value="-1" selected="@(pr_ff)">Low</option>
+                        <option value="-2" selected="@(pr_fe)">Lowest</option>
+                    </select>
+                    
+                </td>
+            </tr>
+            <tr>
+                <th>Contact information</th>
+                <td>
+                    @Model.task.ContactInfo
+                </td>
+                <td >
+                    <input class="w-100" name="contact" value="@Model.task.ContactInfo" />
+                </td>
+            </tr>
+            <tr>
+                <th>Additional information</th>
+                <td>
+                    @Model.task.AdditionalInfo
+                </td>
+                <td >
+                    <input class="w-100" name="additional" value="@Model.task.AdditionalInfo" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <input hidden name="id" value="@Model.task.Id" />
+    <div class="d-flex justify-content-center">
+        <button class="btn btn-primary btn-lg m-2" name="Action" value="E" href="/">Apply changes</button>
+    </div>
+    <button class="btn btn-danger btn-sm m-2" name="Action" value="D" href="/">Delete this task</button>
+
+</form>

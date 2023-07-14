@@ -1,0 +1,166 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+
+
+    string str_contact = "btn btn-outline-dark my-0 mx-0";
+    string str_project = "btn btn-outline-dark my-0 mx-0";
+    string str_status = "btn btn-outline-dark my-0 mx-0";
+    string str_deadline = "btn btn-outline-dark my-0 mx-0";
+    string str_priority = "btn btn-outline-dark my-0 mx-0";
+
+    @switch (Model.Order)
+    {
+        case "status":
+            str_status = "btn btn-outline-primary my-0 mx-0";
+            break;
+        case "deadline":
+            str_deadline = "btn btn-outline-primary my-0 mx-0";
+            break;
+        case "project":
+            str_project = "btn btn-outline-primary my-0 mx-0";
+            break;
+        case "priority":
+            str_priority = "btn btn-outline-primary my-0 mx-0";
+            break;
+        case "contact":
+            str_contact = "btn btn-outline-primary my-0 mx-0";
+            break;
+        default:
+            break;
+    }
+
+}
+
+<div class="text-center">
+    <h4 class="display-4">Task managment &#x1f642;</h4>
+    <br />
+    <h6>
+        Totally @(Model.Tasknum[0]) tasks
+        (@(Model.Tasknum[1]) active,
+        @(Model.Tasknum[2]) finished,
+        @(Model.Tasknum[3]) on hold and
+        @(Model.Tasknum[4]) cancelled)
+    </h6>
+    <br />
+</div>
+
+<form method="post">
+<div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">
+                    <div>
+                        <button class="@str_project" name="sort" value="project">
+                            <strong>Project name &uarr;</strong>
+                        </button>
+                    </div>
+                </th>
+                <th scope="col">Task description</th>
+                <th scope="col">
+                    <div>
+                        <button class="@str_status" name="sort" value="status">
+                            <strong>Status &uarr;</strong>
+                        </button>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <button class="@str_deadline" name="sort" value="deadline">
+                            <strong>Deadline &uarr;</strong>
+                        </button>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <button class="@str_priority" name="sort" value="priority">
+                            <strong>Priority &uarr;</strong>
+                        </button>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <button class="@str_contact" name="sort" value="contact">
+                            <strong>Contact &uarr;</strong>
+                        </button>
+                    </div>
+                </th>
+                <th scope="col">Additional info</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(Task task in @Model.Tasks)
+            {
+                <tr>
+                    <td>
+                        <button class="btn btn-sm btn-secondary" name="edit" value="id=@task.Id" type="submit">@task.Project</button>
+                    </td>
+                    <td>
+                        @task.Description
+                    </td>
+                    <td>
+                        @switch(@task.Status)
+                        {
+                            case 5:
+                                <p class="text-dark">Finished</p>
+                                break;
+                            case 4:
+                                <p style="color:darkgreen">Active - Final steps</p>
+                                break;
+                            case 3:
+                                <p style="color:green">Active</p>
+                                break;
+                            case 2:
+                                <p style="color:orangered">On hold</p>
+                                break;
+                            case 1:
+                                <p style="color:red">Cancelled</p>
+                                break;
+
+                        }
+                    </td>
+                    <td>
+                        @if (task.Deadline != null)
+                        {
+                            <p>
+                                @task.Deadline.Value.ToString("yyyy-MM-dd HH:mm")
+                            </p>
+                        }
+                    </td>
+                    <td>
+                        @switch (@task.Priority)
+                        {
+                            case 2:
+                                <p>Highest</p>
+                                break;
+                            case 1:
+                                <p>High</p>
+                                break;
+                            case 0:
+                                <p>Normal</p>
+                                break;
+                            case -1:
+                                <p>Low</p>
+                                break;
+                            case -2:
+                                <p>Lowest</p>
+                                break;
+
+                        }
+                    </td>
+                    <td>
+                        @task.ContactInfo
+                    </td>
+                    <td>
+                        @task.AdditionalInfo
+                    </td>
+                
+                </tr>
+            }
+        </tbody>
+
+        </table>
+    </div>
+</form>

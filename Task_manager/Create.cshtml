@@ -1,0 +1,80 @@
+﻿@page
+@model TaskManager.Pages.CreateModel
+@{
+    ViewData["Title"] = "Create task";
+}
+
+<form method="post">
+    <div class="d-flex justify-content-center">
+        <h4>Create new task &#x1f603</h4>
+        <br />
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">New value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="col">Project name</th>
+                <td scope="col">
+                    <input class="w-100" name="project" />
+                </td>
+            </tr>
+            <tr>
+                <th scope="col">Task description</th>
+                <td scope="col">
+                    <input class="w-100" name="description" />
+                </td>
+            </tr>
+            <tr>
+                <th scope="col">Initial status</th>
+                <td scope="col">
+                    <select class="list-group" name="status">
+                        <option value=1>Cancelled</option>
+                        <option value=2>On hold</option>
+                        <option value=3 selected>Active</option>
+                        <option value=4>Active - Final steps</option>
+                        <option value=5>Finished</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th scope="col">Deadline</th>
+                <td scope="col">
+                    <input type="datetime-local" class="w-100" name="deadline" />
+                </td>
+            </tr>
+            <tr>
+                <th scope="col">Priority</th>
+                <td scope="col">
+                    <select class="list-group" name="priority">
+                        <option value=2>Highest</option>
+                        <option value=1>High</option>
+                        <option value=0 selected>Normal</option>
+                        <option value=-1>Low</option>
+                        <option value=-2>Lowest</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th scope="col">Contact information</th>
+                <td scope="col">
+                    <input class="w-100" name="contact" />
+                </td>
+            </tr>
+            <tr>
+                <th scope="col">Additional information</th>
+                <td scope="col">
+                    <input class="w-100" name="additional" />
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+    <div class="d-flex justify-content-center">
+        <button class="btn btn-primary btn-lg" href="/">Create</button>
+    </div>
+</form>
